@@ -10,6 +10,128 @@
     <link rel="preload" as="image" href="https://i.postimg.cc/QdwFWLfc/C5299C6D-B5EB-4B70-BBC7-87562C8520DA.png">
 
 <style>
+  /* ===== GAME OVERLAY FIX CHUẨN ===== */
+/* overlay full màn hình */
+.game-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  z-index:999999;
+}
+
+/* box chính */
+.game-box{
+  width:300px;
+  padding:22px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#0a0a0a,#020202);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 25px 60px rgba(0,0,0,.9);
+  text-align:center;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  animation: popUp .25s ease;
+}
+
+/* title */
+.game-title{
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+/* container nút */
+.game-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* nút game */
+.game-option{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg,#111,#000);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  transition:.2s;
+}
+
+/* không cho xuống dòng */
+.game-option span{
+  white-space:nowrap;
+}
+
+/* hover */
+.game-option:hover{
+  transform:translateY(-2px);
+  background:#111;
+}
+
+/* icon */
+.game-option i{
+  font-size:14px;
+}
+
+/* nút đóng */
+.game-close{
+  margin-top:6px;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:#1a1a1a;
+  color:#aaa;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.game-close:hover{
+  background:#222;
+  color:#fff;
+}
+
+/* animation */
+@keyframes popUp{
+  from{transform:scale(.85); opacity:0}
+  to{transform:scale(1); opacity:1}
+}
+ .game-btn{
+  margin-top:14px;
+  width:100%;
+  height:52px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background: linear-gradient(135deg,#111,#000);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.game-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(0,0,0,1);
+}
+
+.game-btn i{
+  color:#ccc;
+}
   :root {
     --primary-color: 240 100% 50%; 
     --secondary-color: 315 100% 50%; 
@@ -910,6 +1032,26 @@ font-size:12px;
         Your browser does not support audio.
     </audio>
     <div class="menu-container" id="menu" style="display:none;">
+      <div id="gameSelect" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;">
+  
+  <div style="background:#0a0a0a; padding:20px; border-radius:16px; border:1px solid rgba(255,255,255,.1); text-align:center; width:300px;">
+    
+    <h3 style="margin-bottom:15px;">Chọn phiên bản</h3>
+
+    <button class="action-btn" onclick="openFF('normal')" style="margin-bottom:10px;">
+      🔥 Free Fire Thường
+    </button>
+
+    <button class="action-btn" onclick="openFF('max')" style="margin-bottom:10px;">
+      ⚡ Free Fire Max
+    </button>
+
+    <button class="action-btn" onclick="closeGameSelect()" style="background:#222;">
+      ❌ Đóng
+    </button>
+
+  </div>
+</div>
         <div class="menu-header">
             <h1 class="title">
                 <span class="title-main">SENSI LOCK APP</span>
@@ -1071,16 +1213,25 @@ font-size:12px;
                 </div>
             </div>
         </div>
-        <div class="action-buttons">
-            <button class="action-btn export-btn" onclick="exportConfig()">
-                <i class="fas fa-download"></i>
-                <span>Export Config</span>
-            </button>
-            <button class="action-btn import-btn" onclick="importConfig()">
-                <i class="fas fa-upload"></i>
-                <span>Import Config</span>
-            </button>
-        </div>
+       <div class="action-buttons">
+
+    <!-- NÚT MỞ GAME -->
+    <button class="action-btn game-btn" onclick="openGameSelect()">
+        <i class="fas fa-gamepad"></i>
+        <span>Mở Game</span>
+    </button>
+
+    <button class="action-btn export-btn" onclick="exportConfig()">
+        <i class="fas fa-download"></i>
+        <span>Export Config</span>
+    </button>
+
+    <button class="action-btn import-btn" onclick="importConfig()">
+        <i class="fas fa-upload"></i>
+        <span>Import Config</span>
+    </button>
+
+</div>
     </div>
     <div class="settings-panel" id="settings-panel">
         <div class="settings-header">
@@ -1176,6 +1327,21 @@ window.onload = () => {
     glass.style.display = "none"; // 🔥 vẫn ẩn
   }
 };
+function openGameSelect(){
+  document.getElementById("gameSelect").style.display = "flex";
+}
+
+function closeGameSelect(){
+  document.getElementById("gameSelect").style.display = "none";
+}
+
+function openFF(type){
+  if(type === "normal"){
+    window.location.href = "freefire://";
+  }else{
+    window.location.href = "freefiremax://";
+  }
+}
 </script>
     
 </body>
