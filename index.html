@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENSI LOCK APP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preload" as="image" href="https://i.postimg.cc/QdwFWLfc/C5299C6D-B5EB-4B70-BBC7-87562C8520DA.png">
+
+<style>
+:root{
+--bg1:#020202;
+--bg2:#000000;
+--panel:#050505;
+--panel2:#0a0a0a;
+--ink:#f5f5f5;
+--muted:#9a9a9a;
+--g1:#2a2a2a;
+--g2:#1a1a1a;
+--g3:#0d0d0d;
+--stroke:rgba(255,255,255,.08);
+--glass1:rgba(255,255,255,.05);
+--glass2:rgba(255,255,255,.01);
+--shadow:0 25px 70px rgba(0,0,0,.9);
+--rad:24px;
+--warn:#888;
+--err:#ff4d4d;
+--ok:#cccccc;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0;
+color:var(--ink);
+font:15px/1.6 system-ui;
+background:
+radial-gradient(60vw 40vh at 20% -10%, rgba(255,255,255,.08), transparent 60%),
+radial-gradient(50vw 40vh at 100% 10%, rgba(255,255,255,.05), transparent 60%),
+linear-gradient(180deg,var(--bg2),var(--bg1) 35%, #000);
+overflow-x:hidden;
+}
+#bgCanvas{position:fixed; inset:0; z-index:-1}
+.screen{max-width:880px; margin:32px auto 120px; padding:0 18px}
+.head{display:flex; align-items:center; gap:14px; margin-bottom:14px}
+.avatar{
+width:74px;height:74px;padding:3px;border-radius:22px;
+background:linear-gradient(135deg,#222,#000);
+box-shadow:0 20px 50px rgba(0,0,0,.9);
+}
+.avatar .inner{
+width:100%;height:100%;
+border-radius:19px;
+background:#000;
+overflow:hidden
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.brand-title{
+font-weight:1000;
+padding:10px 14px;
+border-radius:14px;
+background:linear-gradient(180deg,var(--glass1),var(--glass2));
+border:1px solid var(--stroke);
+color:#fff;
+box-shadow:0 10px 40px rgba(0,0,0,.8);
+}
+.brand-sub{color:var(--muted); font-size:12px}
+.card{
+border-radius:var(--rad);
+background:
+linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01)),
+linear-gradient(180deg,#0a0a0a,#020202);
+border:1px solid rgba(255,255,255,.06);
+box-shadow:var(--shadow);
+padding:22px;
+}
+.sub{color:var(--muted)}
+.field{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border-radius:16px;
+background:linear-gradient(180deg,#111,#050505);
+border:1px solid rgba(255,255,255,.06);
+}
+.field input{
+flex:1;
+border:0;
+background:none;
+color:white;
+font-size:16px;
+outline:none;
+}
+.iconbtn{
+width:36px;height:36px;
+border-radius:10px;
+background:#111;
+border:1px solid rgba(255,255,255,.06);
+color:#fff;
+cursor:pointer;
+}
+.meter{
+height:6px;
+background:#111;
+border-radius:999px;
+overflow:hidden;
+}
+.mbar{
+height:100%;
+background:linear-gradient(90deg,#333,#888,#ddd);
+}
+.btn{
+margin-top:14px;
+width:100%;
+height:56px;
+border-radius:16px;
+border:0;
+cursor:pointer;
+font-weight:900;
+color:#fff;
+background:
+linear-gradient(180deg, rgba(255,255,255,.15), rgba(255,255,255,.02)),
+linear-gradient(135deg,#1a1a1a,#050505);
+box-shadow:
+0 15px 50px rgba(0,0,0,.9),
+inset 0 0 10px rgba(255,255,255,.05);
+}
+.status{margin-top:10px;color:#aaa;font-size:13px}
+.glass{
+margin-top:18px;
+border-radius:18px;
+background:linear-gradient(180deg,#0a0a0a,#030303);
+border:1px solid rgba(255,255,255,.06);
+padding:14px;
+}
+.legal{
+margin-top:18px;
+text-align:center;
+color:#888;
+font-size:12px;
+}
+</style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+<main class="screen">
+
+<header class="head" id="appHeader">
+<div class="avatar">
+<div class="inner">
+<img src="https://i.postimg.cc/05B73vTY/IMG-7856.jpg">
+</div>
+</div>
+
+<div>
+<div class="brand-title">SENSI LOCK APP ✨ - NG CHI DUC </div>
+<div class="brand-sub">Sensi Lock App • An Toàn • Chất Lượng</div>
+</div>
+</header>
+
+<section class="card">
+
+
+
+<div class="meter"><div class="mbar" id="mbar"></div></div>
+
+<button class="btn" id="loginBtn">Mở Menu</button>
+<div class="contact-box">
+<div class="contact-item" onclick="window.open('https://tiktok.com/@cdzxcv')">
+  <i class="fab fa-tiktok"></i>
+  <span>TikTok: @cdzxcv</span>
+</div>
+
+  <div class="contact-item" onclick="window.open('facebook.com/cducdz')">
+    <i class="fab fa-facebook"></i>
+    <span>Facebook: fb.com/cducdz</span>
+  </div>
+
+  <div class="contact-item" onclick="window.open('https://zalo.me/0396134792'')">
+    <i class="fas fa-comment-dots"></i>
+    <span>Zalo: 0396 134 792</span>
+  </div>
+</div>
+<div class="status" id="statusText"></div>
+
+</section>
+
+<section class="glass">
+• SENSI LOCK APP – Công cụ hỗ trợ nâng cao trải nghiệm chiến đấu, tối ưu thao tác và tăng độ chính xác khi ngắm bắn.<br/>
+• Tích hợp nhiều tính năng thông minh giúp kiểm soát tâm tốt hơn, giảm giật và cải thiện tốc độ phản xạ trong mọi tình huống.<br/>
+• Thiết kế tối giản nhưng mạnh mẽ, mang lại cảm giác chuyên nghiệp .<br/>
+• Tối ưu hiệu năng, hoạt động mượt mà trên nhiều thiết bị mà không gây ảnh hưởng đến hệ thống.<br/>
+• Aimlock là công cụ hỗ trợ tối ưu thao tác kéo tâm, giúp cải thiện độ chính xác và bám đầu khi chơi game, nhưng vẫn cần kỹ năng người dùng để phát huy hiệu quả tối đa.
+<br/>
+</section>
+
+<div class="legal" id="appFooter">@cdzxcv</div>
+    <canvas id="particles-canvas"></canvas>
+    <audio id="background-music" loop>
+        <source src="https://files.catbox.moe/wody9q.mp3" type="audio/mpeg">
+        Your browser does not support audio.
+    </audio>
+    <div class="menu-container" id="menu" style="display:none;">
+        <div class="menu-header">
+            <h1 class="title">
+                <span class="title-main">SENSI LOCK APP</span>
+                <span class="title-flag">🇻🇳</span>
+            </h1>
+            <div class="header-controls">
+                <button class="control-btn settings-btn" onclick="toggleSettings()">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="control-btn minimize-btn" onclick="minimizeMenu()">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="logout-btn" onclick="closeMenu()">
+  <i class="fas fa-sign-out-alt"></i>
+  <span>Thoát</span>
+</button>
+            </div>
+        </div>
+        <div class="performance-monitor">
+            <div class="perf-item">
+                <span class="perf-label">CPU:</span>
+                <span class="perf-value" id="cpu-usage">45%</span>
+            </div>
+            <div class="perf-item">
+                <span class="perf-label">FPS:</span>
+                <span class="perf-value" id="fps-counter">144</span>
+            </div>
+            <div class="perf-item">
+                <span class="perf-label">PING:</span>
+                <span class="perf-value" id="ping-value">28ms</span>
+            </div>
+        </div>
+        <div class="features-section">
+            <h3 class="section-title">Aimlock Function ⚙️</h3>
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-crosshairs"></i>
+                    <span>AIMBOT XIT</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="aim-head" class="toggle-input">
+                    <label for="aim-head" class="toggle-label" data-feature="head"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-hand-paper"></i>
+                    <span>AOTU BOT DRAG</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="aim-shoulder" class="toggle-input">
+                    <label for="aim-shoulder" class="toggle-label" data-feature="shoulder"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-lock"></i>
+                    <span>AIMLOCK XIT 1.0</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="aim-arms" class="toggle-input">
+                    <label for="aim-arms" class="toggle-label" data-feature="arms"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-bullseye"></i>
+                    <span>AIM SIT X PORT</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="aim-torso" class="toggle-input">
+                    <label for="aim-torso" class="toggle-label" data-feature="torso"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>SENSI PHONE</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="aim-legs" class="toggle-input">
+                    <label for="aim-legs" class="toggle-label" data-feature="legs"></label>
+                </div>
+            </div>
+        </div>
+        <div class="features-section">
+            <h3 class="section-title">Enhanced Features</h3>
+            
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-eye"></i>
+                    <span>AIM SCOPE</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="esp-vision" class="toggle-input">
+                    <label for="esp-vision" class="toggle-label" data-feature="esp"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>SPEED SMOOTH</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="speed-hack" class="toggle-input">
+                    <label for="speed-hack" class="toggle-label" data-feature="speed"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>NO RECOIL</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="no-recoil" class="toggle-input">
+                    <label for="no-recoil" class="toggle-label" data-feature="recoil"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-ghost"></i>
+                    <span>AIM AOTU</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="wall-hack" class="toggle-input">
+                    <label for="wall-hack" class="toggle-label" data-feature="wallhack"></label>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-label">
+                    <i class="fas fa-fire"></i>
+                    <span>AUTO FIRE</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="auto-fire" class="toggle-input">
+                    <label for="auto-fire" class="toggle-label" data-feature="autofire"></label>
+                </div>
+            </div>
+        </div>
+        <div class="audio-controls">
+            <h3 class="section-title">Audio Controls</h3>
+            <div class="audio-row">
+                <button class="audio-btn" id="music-toggle">
+                    <i class="fas fa-play"></i>
+                    <span>Play Music</span>
+                </button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" class="volume-slider">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="action-btn export-btn" onclick="exportConfig()">
+                <i class="fas fa-download"></i>
+                <span>Export Config</span>
+            </button>
+            <button class="action-btn import-btn" onclick="importConfig()">
+                <i class="fas fa-upload"></i>
+                <span>Import Config</span>
+            </button>
+        </div>
+    </div>
+    <div class="settings-panel" id="settings-panel">
+        <div class="settings-header">
+            <h3>Settings</h3>
+            <button class="close-btn" onclick="toggleSettings()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-item">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select" class="setting-select">
+                    <option value="default">Default</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="purple">Purple</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label for="particles-toggle">Particles:</label>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="particles-toggle" class="toggle-input" checked>
+                    <label for="particles-toggle" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="setting-item">
+                <label for="sound-effects">Sound Effects:</label>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="sound-effects" class="toggle-input" checked>
+                    <label for="sound-effects" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="setting-item">
+                <label for="opacity-slider">Menu Opacity:</label>
+                <input type="range" id="opacity-slider" min="50" max="100" value="90" class="setting-slider">
+            </div>
+        </div>
+    </div>
+    <div class="target-display">
+        <div class="human-silhouette">
+            <div class="target-dot head-dot" data-part="head"></div>
+            <div class="target-dot shoulder-dot" data-part="shoulder"></div>
+            <div class="target-dot arm-left-dot" data-part="arms"></div>
+            <div class="target-dot arm-right-dot" data-part="arms"></div>
+            <div class="target-dot torso-dot" data-part="torso"></div>
+            <div class="target-dot leg-left-dot" data-part="legs"></div>
+            <div class="target-dot leg-right-dot" data-part="legs"></div>
+        </div>
+    </div>
+    <div class="notification-container" id="notification-container"></div>
+    <input type="file" id="config-file-input" accept=".json" style="display: none;">
+    <script src="particles.js"></script>
+    <script src="script.js"></script>
+<script>
+const loginBtn = document.getElementById("loginBtn");
+const menu = document.getElementById("menu");
+const card = document.querySelector(".card");
+const header = document.getElementById("appHeader");
+const footer = document.getElementById("appFooter");
+const glass = document.querySelector(".glass");
+
+// Mở menu
+loginBtn.onclick = () => {
+  menu.style.display = "block";
+  card.style.display = "none";
+  header.style.display = "none";
+  footer.style.display = "none";
+  glass.style.display = "none"; // 🔥 ẨN GLASS
+
+  localStorage.setItem("menu_opened", "true");
+};
+
+// Thoát menu
+function closeMenu(){
+  menu.style.display = "none";
+  card.style.display = "block";
+  header.style.display = "flex";
+  footer.style.display = "block";
+  glass.style.display = "block"; // 🔥 HIỆN LẠI
+
+  localStorage.removeItem("menu_opened");
+}
+
+// Load lại trạng thái
+window.onload = () => {
+  const opened = localStorage.getItem("menu_opened");
+
+  if (opened === "true") {
+    menu.style.display = "block";
+    card.style.display = "none";
+    header.style.display = "none";
+    footer.style.display = "none";
+    glass.style.display = "none"; // 🔥 vẫn ẩn
+  }
+};
+</script>
+    
+</body>
+</html>
