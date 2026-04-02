@@ -1,5 +1,5 @@
 (function(){
-  const API_BASE = 'https://apikey-production-8bb0.up.railway.app';
+  const API_BASE = 'https://testapi-production-11a6.up.railway.app';
   const BRAND_TITLE = 'NG CHI DUC API SERVER KEY';
   const TZ = 'Asia/Ho_Chi_Minh';
   const ALWAYS_PROMPT = false;
@@ -1031,4 +1031,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 100);
 });
-
