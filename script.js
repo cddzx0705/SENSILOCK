@@ -1,5 +1,5 @@
 (function(){
-  const API_BASE = 'https://servermua-production.up.railway.app';
+  const API_BASE = 'https://serverfree-production.up.railway.app';
   const BRAND_TITLE = 'NG CHI DUC API SERVER KEY';
   const TZ = 'Asia/Ho_Chi_Minh';
   const ALWAYS_PROMPT = false;
@@ -101,10 +101,20 @@
           <div class="vg-label">Mã Kích Hoạt</div>
           <input id="vgKey" class="vg-input" placeholder="Dán key...">
 
-          <div class="vg-actions">
+        <div class="vg-actions">
   <button class="vg-btn vg-btn--pri" id="vgCheck">Kiểm tra</button>
-  <button class="vg-btn vg-btn--pri" id="vgActive">Kích hoạt</button>
-  <button class="vg-btn vg-btn--ghost" id="vgContact">Liên hệ mua key</button>
+
+  <button class="vg-btn vg-btn--pri" id="vgActive">
+    Kích hoạt
+  </button>
+
+  <button class="vg-btn vg-btn--ghost" id="vgGetKey">
+    Get Key Free
+  </button>
+
+  <button class="vg-btn vg-btn--ghost" id="vgContact">
+    Liên hệ mua key
+  </button>
 </div>
    
 
@@ -123,10 +133,12 @@
     $('#vgCheck').onclick = onCheck;
     $('#vgActive').onclick = onActivate;
     $('#vgContact').onclick = onContact;
-
+    $('#vgGetKey').onclick = onGetKey;
     return wrap;
   }
-
+function onGetKey(){
+  window.location.href = 'https://www.ngchiducdz.info.vn/free.html';
+}
   function setMsg(type, html){
     const box = $('#vgMsg');
     box.className = 'vg-msg '+(type||'');
