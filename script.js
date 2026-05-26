@@ -108,9 +108,6 @@
     Kích hoạt
   </button>
 
-  <button class="vg-btn vg-btn--ghost" id="vgGetKey">
-    Get Key Free
-  </button>
 
   <button class="vg-btn vg-btn--ghost" id="vgContact">
     Liên hệ mua key
